@@ -1,5 +1,5 @@
 **/results/
 **/build/
-**idea
+**/.idea/
 **/target/
 *.iml
