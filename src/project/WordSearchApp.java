@@ -8,7 +8,7 @@ public class WordSearchApp {
     public static void main(String[] args) {
 
         // I need to get a bunch of words that I need to put into this grid
-        List<String> words = Arrays.asList("One", "Two", "Three");
+        List<String> words = Arrays.asList("ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT");
         Grid grid = new Grid(10);
         grid.fillGrid(words);
         grid.displayGrid();

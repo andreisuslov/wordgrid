@@ -1,5 +1,7 @@
 package project;
 
+import org.apache.maven.shared.utils.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,9 +14,12 @@ public class Grid {
     private List<Coordinate> coordinates = new ArrayList<>();
 
     private enum Direction {
+        DIAGONAL,
         HORIZONTAL,
         VERTICAL,
-        DIAGONAL
+        DIAGONAL_INVERSE,
+        HORIZONTAL_INVERSE,
+        VERTICAL_INVERSE
     }
 
     private class Coordinate {
@@ -63,8 +68,23 @@ public class Grid {
                                 contents[x++][y++] = c;
                             }
                             break;
+                        case HORIZONTAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x][y--] = c;
+                            }
+                            break;
+                        case VERTICAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y] = c;
+                            }
+                            break;
+                        case DIAGONAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y--] = c;
+                            }
+                            break;
                     }
-                    break;
+                    break; // done with the case so I can go to the next case
                 }
             }
         }
@@ -96,7 +116,7 @@ public class Grid {
             case HORIZONTAL:
                 if (coordinate.y + word.length() > gridSize) return false;
                 for (int i = 0; i < word.length(); i++) {
-                    if (contents[coordinate.x][coordinate.y + 1] != '_') return false;
+                    if (contents[coordinate.x][coordinate.y + i] != '_') return false;
                 }
                 break;
             case VERTICAL:
@@ -111,9 +131,25 @@ public class Grid {
                     if (contents[coordinate.x + i][coordinate.y + i] != '_') return false;
                 }
                 break;
+            case HORIZONTAL_INVERSE:
+                if (coordinate.y < word.length()) return false;
+                for (int i = 0; i < word.length(); i++) {
+                    if (contents[coordinate.x][coordinate.y - i] != '_') return false;
+                }
+                break;
+            case VERTICAL_INVERSE:
+                if (coordinate.x < word.length()) return false;
+                for (int i = 0; i < word.length(); i++) {
+                    if (contents[coordinate.x - i][coordinate.y] != '_') return false;
+                }
+                break;
+            case DIAGONAL_INVERSE:
+                if (coordinate.x < word.length() || coordinate.y < word.length()) return false;
+                for (int i = 0; i < word.length(); i++) {
+                    if (contents[coordinate.x - i][coordinate.y - i] != '_') return false;
+                }
+                break;
         }
         return true;
     }
-
-
 }
